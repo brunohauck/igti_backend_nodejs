@@ -50,7 +50,7 @@ app.use(bodyParser.json());
 //app.use(expressJwt({secret: 'fdsfljalfldajfldafjdlkafljdaa'}).unless({path: ['/api/auth']}));
 
 app.get('/', function (req, res) {
-    res.send('API Server')
+    res.send('Angular JWT Todo API Server')
 });
 
 app.post('/api/auth', function(req, res) {
@@ -74,7 +74,7 @@ app.post('/api/createuser', function(req, res) {
     });        
 });
 
-app.post('/api/edituser', function(req, res) {
+app.put('/api/edituser', function(req, res) {
     const user = req.body;   
     console.log(user);     
     db.editUser( user, function(err, value) {

@@ -123,9 +123,9 @@ app.get('/api/products', function (req, res){
 
 app.get('/api/createcollections', function (req, res){
     res.type('json');
-    //db.createUsersColetion();
+    db.createUsersColetion();
     console.log("Criando UserCollection");
-    //db.createUsers(USERS);
+    db.createUsers(USERS);
     db.createProductsCollection();
     db.createProducts(PRODUCTS);
     console.log("Salvando os usuários estáticos no banco de dados");

@@ -151,7 +151,7 @@ app.get('/api/getUserById/:id', function (req, res){
     });
 });
 
-app.listen(4000, function(){
+app.listen(process.env.PORT || 4000, function(){
     console.log('API IGTI v2.1');
 });
 

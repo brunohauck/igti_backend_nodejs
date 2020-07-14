@@ -152,6 +152,6 @@ app.get('/api/getUserById/:id', function (req, res){
 });
 
 app.listen(4000, function(){
-    console.log('Listening on por 4000');
+    console.log('API IGTI v2.0');
 });
 

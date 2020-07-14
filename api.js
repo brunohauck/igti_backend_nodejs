@@ -126,8 +126,8 @@ app.get('/api/createcollections', function (req, res){
     db.createUsersColetion();
     console.log("Criando UserCollection");
     db.createUsers(USERS);
-    db.createProductsCollection();
-    db.createProducts(PRODUCTS);
+    //db.createProductsCollection();
+    //db.createProducts(PRODUCTS);
     console.log("Salvando os usuários estáticos no banco de dados");
 });
 
@@ -152,6 +152,6 @@ app.get('/api/getUserById/:id', function (req, res){
 });
 
 app.listen(4000, function(){
-    console.log('API IGTI v2.0');
+    console.log('API IGTI v2.1');
 });
 

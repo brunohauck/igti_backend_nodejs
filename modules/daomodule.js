@@ -1,5 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017";
+//var url = "mongodb://localhost:27017";
+var url = "mongodb+srv://brunohauck:q8DYwYy95uVdz8bV@cluster0.gqghb.gcp.mongodb.net/mydb?retryWrites=true&w=majority";
 
 exports.createUsersColetion = function (){
     MongoClient.connect(url , { useNewUrlParser: true } , function(err, db) {
@@ -147,6 +148,75 @@ exports.createProductsCollection = function (){
       }); 
 };
 
+exports.createProduct = function (product,callback){
+    MongoClient.connect(url , { useNewUrlParser: true } , function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("mydb");
+        dbo.collection("products").insertOne(product, function(err, res) {
+            if(err)
+            {
+              callback(err,false);
+            }
+            else{
+                var result = true
+                db.close();
+                callback(null,result);
+            }            
+        });
+    });
+};
+
+
+
+
+exports.editProduct = function (product,callback){
+    var ObjectID = require('mongodb').ObjectID; 
+    MongoClient.connect(url , { useNewUrlParser: true } , function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("mydb");
+        var query = { _id : ObjectID(product._id) };
+        var newvalues = 
+        { $set: 
+            { 
+            "productName": product.productName, 
+            "price": product.price,
+            "description": product.description,
+            "img_url": product.img_url,
+            },
+        };
+        dbo.collection("products").updateOne(query, newvalues, { upsert: true }, function(err, res) {
+            if(err)
+            {
+              callback(err,false);
+            }
+            else{
+                var result = true
+                db.close();
+                callback(null,result);
+            }            
+        });
+    });
+};
+
+exports.deleteProduct = function (id,callback){
+    var ObjectID = require('mongodb').ObjectID; 
+    MongoClient.connect(url , { useNewUrlParser: true } , function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("mydb");
+        var query = { _id : ObjectID(id) };
+        dbo.collection("products").deleteOne(query,  { upsert: true }, function(err, res) {
+            if(err)
+            {
+              callback(err,false);
+            }
+            else{
+                var result = true
+                db.close();
+                callback(null,result);
+            }            
+        });
+    });
+};
 
 // foi criada um função onde passamos por parâmetro nosso Json 
 exports.createProducts = function (products){
@@ -164,6 +234,23 @@ exports.createProducts = function (products){
         });
     });
 }
+
+exports.dbGetProductById = function (productId,callback) {
+    var ObjectID = require('mongodb').ObjectID; 
+    MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("mydb");
+      var query = { _id : ObjectID(productId) };
+      dbo.collection('products').find(query).toArray(function(err,result){
+        if(err)
+        {
+          callback(err,null);
+        }
+        if(result)
+          callback(null,result);
+      });
+    });
+};
 
 // um ponto importante dessa função e definição de um callback que 
 // vai retornar a informação para o ponto do sistema que executamos

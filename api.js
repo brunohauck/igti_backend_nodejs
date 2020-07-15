@@ -112,15 +112,6 @@ app.get('/api/users', function (req, res){
     });
 });
 
-app.get('/api/products', function (req, res){
-    res.type('json');
-    db.dbGetAllProducts( function(err, value) {
-        if (err) throw err;
-        console.log(value);
-        res.send(value);
-    });
-});
-
 app.get('/api/createcollections', function (req, res){
     res.type('json');
     db.createUsersColetion();
@@ -151,7 +142,70 @@ app.get('/api/getUserById/:id', function (req, res){
     });
 });
 
+//------------------------- Products -------------------
+
+app.post('/api/product', function(req, res) {
+    const product = req.body;    
+    db.createProduct(product, function(err, value) {
+        if (err) throw err;
+        console.log(value);
+        if(value){
+            res.send({"msg": "sucesso"});
+        }else{
+            res.send({"msg": "erro"});
+        }
+    });        
+});
+
+app.put('/api/product', function(req, res) {
+    const product = req.body;   
+    console.log(product);     
+    db.editProduct( product, function(err, value) {
+        if (err) throw err;
+        console.log(value);
+        if(value){
+            res.send({"msg": "sucesso"});
+        }else{
+            res.send({"msg": "erro"});
+        }
+    });        
+});
+
+app.get('/api/getProductById/:id', function (req, res){
+    var product_id = req.params.id;
+    res.type('json');
+    console.log(product_id);
+    db.dbGetProductById( product_id, function(err, value) {
+        if (err) throw err;
+        console.log(value);
+        res.send(value);
+    });
+});
+
+app.delete('/api/product/:id', function(req, res) {
+    const id = req.params.id;   
+    console.log(id);     
+    db.deleteProduct( id, function(err, value) {
+        if (err) throw err;
+        console.log(value);
+        if(value){
+            res.send({"msg": "sucesso"});
+        }else{
+            res.send({"msg": "erro"});
+        }
+    });        
+});
+
+app.get('/api/products', function (req, res){
+    res.type('json');
+    db.dbGetAllProducts( function(err, value) {
+        if (err) throw err;
+        console.log(value);
+        res.send(value);
+    });
+});
+
 app.listen(process.env.PORT || 4000, function(){
-    console.log('API IGTI v2.1');
+    console.log('API IGTI v2.2');
 });
 
